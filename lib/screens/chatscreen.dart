@@ -1,9 +1,10 @@
 import 'package:chatapp/constent.dart';
 import 'package:chatapp/model/message.dart';
+import 'package:chatapp/screens/loginscreen.dart';
 import 'package:chatapp/widget/bubblechat.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 class ChatScreen extends StatelessWidget {
    String? email;
    ChatScreen({Key? key, this.email}) : super(key: key);
@@ -32,9 +33,17 @@ class ChatScreen extends StatelessWidget {
                   children: [
                     Image.asset(kLogo,
                         height: 50),
-                    const Text('Scholar Chat')
+                    const Text('Scholar Chat'),
+                    const Spacer(),
+                    IconButton(
+                        onPressed: ()async{
+                          await FirebaseAuth.instance.signOut();
+                          Navigator.pushReplacementNamed(context, LoginScreen.id,);
+                        },
+                        icon: const Icon(Icons.logout))
                   ],
                 ),
+
               ),
               body: Column(
                 children: [
@@ -89,7 +98,11 @@ class ChatScreen extends StatelessWidget {
               )
           );
         }else{
-          return const Text('Loading...');
+          return const Scaffold(
+            body:  Center(
+              child:  Text('Loading...'),
+            ),
+          );
         }
         });
   }
